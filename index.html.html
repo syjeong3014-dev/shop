@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>십이지서가 - 한양도성 열두 수호신과 마음의 서재</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Fredoka, Inter & Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;600;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['"Fredoka"', '"Inter"', 'sans-serif'],
+            sans: ['"Inter"', '"Noto Sans KR"', 'sans-serif'],
+          },
+          colors: {
+            appBg: '#F8F9FB',
+            appCard: '#FFFFFF',
+            brandLime: '#CEF2A0',
+            brandRed: '#DE4A3F',
+            brandYellow: '#F6E575',
+            brandBlue: '#002FCA',
+            textMain: '#1A1C20',
+            textSub: '#687182',
+            pillBg: '#EDF1F7',
+          },
+          borderRadius: {
+            '3xl': '28px',
+            '4xl': '34px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #E7EAF0;
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      color: #1A1C20;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .pop-card {
+      background: #FFFFFF;
+      border-radius: 26px;
+      box-shadow: 0 10px 24px -4px rgba(0, 47, 202, 0.06);
+      border: 1.5px solid #F1F4F9;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pop-card:active {
+      transform: scale(0.98);
+    }
+    .layered-card-bg {
+      position: relative;
+    }
+    .layered-card-bg::before {
+      content: '';
+      position: absolute;
+      inset: -4px -6px 6px 4px;
+      background: #002FCA;
+      border-radius: 28px;
+      z-index: 0;
+      transform: rotate(-2deg);
+      opacity: 0.9;
+    }
+    .layered-card-bg::after {
+      content: '';
+      position: absolute;
+      inset: -2px 6px -4px -4px;
+      background: #CEF2A0;
+      border-radius: 28px;
+      z-index: 0;
+      transform: rotate(2.5deg);
+      opacity: 0.9;
+    }
+    @keyframes orb-float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.02); }
+    }
+    .animate-orb-float {
+      animation: orb-float 3.5s ease-in-out infinite;
+    }
+    @keyframes orb-star-glow {
+      0%, 100% {
+        filter: drop-shadow(0 0 14px rgba(255, 174, 230, 0.8)) drop-shadow(0 0 24px rgba(100, 200, 255, 0.6));
+      }
+      50% {
+        filter: drop-shadow(0 0 24px rgba(246, 229, 117, 0.95)) drop-shadow(0 0 40px rgba(222, 74, 63, 0.7));
+      }
+    }
+    .orb-fully-cleared {
+      animation: orb-star-glow 2s ease-in-out infinite, orb-float 2.5s ease-in-out infinite;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4">
+
+  <!-- 모바일 프레임 -->
+  <div class="relative w-full max-w-[430px] h-screen sm:h-[900px] bg-appBg overflow-hidden flex flex-col sm:rounded-4xl shadow-2xl border-4 sm:border-8 border-white">
+    
+    <!-- ================= 상단 헤더 ================= -->
+    <header class="relative z-30 pt-4 px-6 pb-3 bg-appBg border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
+        <h1 class="font-title font-black text-xl text-brandBlue tracking-tight">십이지서가</h1>
+        <span class="text-[10px] font-black text-textMain bg-brandLime px-2.5 py-0.5 rounded-full uppercase">경복궁</span>
+      </div>
+
+      <!-- 완수 뱃지 -->
+      <div class="flex items-center gap-2">
+        <div class="bg-white border-2 border-brandBlue px-3 py-1.5 rounded-full text-xs font-black text-brandBlue flex items-center gap-1 shadow-sm">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brandRed fill-brandRed"></i>
+          <span id="header-purify-count">0/12 완수</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= 메인 스크롤 콘텐츠 ================= -->
+    <main id="main-scroll-viewport" onscroll="handleMainScroll()" class="relative flex-1 overflow-y-auto custom-scroll px-6 pb-24 z-10 scroll-smooth">
+      
+      <!-- ==================== [탭 1: 십이지서가 홈] ==================== -->
+      <section id="tab-home" class="space-y-6 pt-3">
+        <div class="text-center space-y-1">
+          <h1 class="font-title font-extrabold text-3xl tracking-tight text-textMain uppercase">
+            Discovery
+          </h1>
+          <p class="text-xs text-textSub font-medium">
+            오늘 당신을 지켜주는 열두 수호신의 능력을 깨워보세요.
+          </p>
+        </div>
+
+        <!-- 마음 구슬 위젯 -->
+        <div class="pop-card p-6 text-center relative overflow-hidden bg-white border-2 border-slate-100">
+          <div class="flex items-center justify-between text-xs font-bold text-textSub mb-2">
+            <span class="flex items-center gap-1 font-title font-bold text-textMain">
+              <i data-lucide="gem" class="w-3.5 h-3.5 text-brandBlue"></i> 마음 구슬
+            </span>
+            <span id="orb-status-text" class="text-brandBlue bg-blue-50 px-2.5 py-0.5 rounded-full font-black text-[11px]">0% CLEAR</span>
+          </div>
+
+          <!-- 별 보석 수정구 & 보랏빛 쿠션 -->
+          <div class="my-1 flex flex-col items-center justify-center">
+            <div onclick="handleOrbTouch()" id="orb-interactive-wrapper" class="relative w-44 h-44 flex items-center justify-center animate-orb-float transition-all duration-500 select-none active:scale-95 cursor-pointer">
+              <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="glassSphere" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                    <stop offset="25%" stop-color="#D7EBFF" stop-opacity="0.6"/>
+                    <stop offset="65%" stop-color="#C29BFF" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#4B7BFF" stop-opacity="0.75"/>
+                  </radialGradient>
+                  <linearGradient id="starPink" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FFD6F3"/>
+                    <stop offset="45%" stop-color="#F272C8"/>
+                    <stop offset="100%" stop-color="#AF2F99"/>
+                  </linearGradient>
+                  <linearGradient id="cushionPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#7B2CBF"/>
+                    <stop offset="60%" stop-color="#5A189A"/>
+                    <stop offset="100%" stop-color="#3C096C"/>
+                  </linearGradient>
+                </defs>
+                <path d="M22 152 C26 138 46 134 60 148 C76 136 124 136 140 148 C154 134 174 138 178 152 C184 168 168 184 148 186 C124 188 76 188 52 186 C32 184 16 168 22 152 Z" fill="url(#cushionPurple)"/>
+                <path d="M48 156 C68 148 132 148 152 156 C166 166 142 182 100 182 C58 182 34 166 48 156 Z" fill="#6A1FB8" opacity="0.8"/>
+                <circle cx="100" cy="94" r="74" fill="url(#glassSphere)"/>
+                <circle cx="100" cy="94" r="73" stroke="#8EB4FF" stroke-width="2" opacity="0.6"/>
+                <ellipse cx="140" cy="62" rx="10" ry="6" fill="#FFFFFF" opacity="0.75" transform="rotate(-25 140 62)"/>
+                <circle cx="70" cy="120" r="4" fill="#E0F2FE" opacity="0.8"/>
+                <circle cx="142" cy="116" r="5" fill="#E0F2FE" opacity="0.7"/>
+                <polygon points="56,124 63,120 70,124 63,128" fill="#FDE047" stroke="#FFF" stroke-width="1.2"/>
+                <path d="M120 134 L123 125 L129 133 L120 138 L126 145 Z" fill="#FFFFFF" opacity="0.85"/>
+                <!-- 별 보석 -->
+                <g id="orb-inner-star" class="transition-all duration-700 origin-center" style="transform-origin: 100px 92px;">
+                  <path d="M100 48 L114 74 L142 80 L122 102 L126 130 L100 118 L74 130 L78 102 L58 80 L86 74 Z" fill="#FFF9C4" stroke="#FFF" stroke-width="3" stroke-linejoin="round"/>
+                  <path d="M100 52 L112 76 L138 81 L120 100 L124 125 L100 114 L76 125 L80 100 L62 81 L88 76 Z" fill="url(#starPink)"/>
+                  <path d="M100 52 L100 92 L112 76 Z" fill="#FFE4F8" opacity="0.8"/>
+                  <path d="M138 81 L100 92 L120 100 Z" fill="#C026D3" opacity="0.6"/>
+                  <path d="M124 125 L100 92 L100 114 Z" fill="#86198F" opacity="0.6"/>
+                  <path d="M76 125 L100 92 L80 100 Z" fill="#C026D3" opacity="0.5"/>
+                  <path d="M62 81 L100 92 L88 76 Z" fill="#F5D0FE" opacity="0.8"/>
+                </g>
+                <path d="M46 54 C60 38 80 30 102 30" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.85"/>
+              </svg>
+            </div>
+
+            <div id="orb-touch-hint" class="mt-2 hidden">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-black bg-brandYellow text-textMain shadow-md animate-bounce cursor-pointer" onclick="handleOrbTouch()">
+                <span>🔮 별 구슬을 터치해 오늘의 운세 열기</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="w-full bg-pillBg rounded-full h-3 p-0.5 mt-2 overflow-hidden">
+            <div id="orb-progress" class="bg-brandBlue h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+          </div>
+          <p id="orb-desc-text" class="text-[11px] text-textSub font-medium mt-2.5">
+            "스스로 실천할 때마다 마음 구슬이 투명한 빛을 되찾습니다."
+          </p>
+        </div>
+
+        <!-- GUARDIAN POWER -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-title font-bold text-base text-textMain uppercase tracking-wide">
+              Guardian Power
+            </h2>
+            <div class="flex items-center gap-2">
+              <button onclick="clearAllActionChecks()" id="btn-uncheck-all" class="text-[10px] font-extrabold text-brandRed bg-red-50 px-2.5 py-1 rounded-full hover:bg-red-100 transition-all hidden shadow-sm">
+                해제
+              </button>
+              <button onclick="toggleActionExpand()" class="text-xs font-extrabold text-brandBlue hover:text-brandRed transition-colors flex items-center gap-0.5">
+                <span id="fold-toggle-text">전체 펼치기 (12)</span>
+                <i id="fold-toggle-icon" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="guardian-actions-container" class="space-y-2.5"></div>
+
+          <button onclick="toggleActionExpand()" id="fold-bottom-btn" class="w-full py-3 bg-white border-2 border-slate-200 hover:border-brandBlue text-brandBlue font-title font-bold text-xs rounded-2xl transition-all shadow-sm flex items-center justify-center gap-1.5 uppercase tracking-wider">
+            <span>더 많은 수호신 능력 펼치기 (9)</span>
+            <i id="fold-bottom-icon" data-lucide="chevron-down" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- 성곽 전령 배너 -->
+        <div class="bg-brandRed text-white p-5 rounded-3xl shadow-lg shadow-red-100 flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-white/20 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+            <div id="hero-pony-avatar" class="w-full h-full"></div>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-brandYellow">
+              <span>숭례문 포니의 새벽 편지</span>
+            </div>
+            <p class="text-xs font-medium leading-snug text-white/95">
+              "오지 않은 내일을 걱정하느라 오늘을 놓치지 마! 도성의 시원한 아침 바람을 마시며 지금 이 순간을 달리는 거야!"
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== [탭 2: 고민 처방소] ==================== -->
+      <section id="tab-counsel" class="space-y-6 pt-3 hidden">
+        <div class="text-center space-y-1">
+          <h1 class="font-title font-extrabold text-3xl tracking-tight text-textMain uppercase">
+            Counseling
+          </h1>
+          <p class="text-xs text-textSub font-medium">
+            오늘 당신을 무겁게 하는 고민을 탭해보세요.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3" id="worry-chip-grid"></div>
+
+        <!-- 처방 결과 카드 -->
+        <div id="counsel-result-card" class="hidden pt-4 pb-2">
+          <div class="layered-card-bg relative z-10">
+            <div class="relative z-10 bg-brandYellow text-textMain p-6 rounded-3xl shadow-xl space-y-4">
+              <div class="flex items-center justify-between border-b border-black/10 pb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-14 h-14 rounded-2xl bg-white flex items-center justify-center p-1 shrink-0 shadow-sm border border-black/5 overflow-hidden">
+                    <div id="counsel-animal-avatar" class="w-full h-full"></div>
+                  </div>
+                  <div>
+                    <h3 id="counsel-guardian-name" class="font-title font-extrabold text-lg text-textMain uppercase">
+                      청이 수호신
+                    </h3>
+                    <p id="counsel-guardian-loc" class="text-[11px] font-black text-brandBlue">
+                      백악산 (북주산) 결계
+                    </p>
+                  </div>
+                </div>
+                <button onclick="document.getElementById('counsel-result-card').classList.add('hidden')" class="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center text-black font-black">
+                  ✕
+                </button>
+              </div>
+
+              <div class="bg-white/95 p-4 rounded-2xl text-xs font-bold leading-relaxed text-textMain shadow-sm" id="counsel-message">
+                "네 안에는 훨씬 더 커다란 세상이 숨어 있어! 나랑 같이 넓은 세계로 떠나볼까?"
+              </div>
+
+              <div class="bg-brandBlue text-white p-4 rounded-2xl space-y-1">
+                <div class="text-[10px] font-black tracking-wider text-brandLime uppercase">
+                  Daily Mission
+                </div>
+                <p class="text-xs font-semibold leading-relaxed" id="counsel-quest">
+                  어린 시절 순수하게 가슴 뛰었던 꿈 1가지 적기
+                </p>
+              </div>
+
+              <button id="counsel-commit-btn" class="w-full py-3.5 bg-brandRed text-white font-title font-bold text-xs rounded-2xl shadow-md uppercase tracking-wider hover:bg-black transition-all flex items-center justify-center gap-1.5">
+                <span>기록장에 미션 등록하기</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== [탭 3: 순성 도감] ==================== -->
+      <section id="tab-guardians" class="space-y-6 pt-3 hidden">
+        <div class="text-center space-y-1">
+          <h1 class="font-title font-extrabold text-3xl tracking-tight text-textMain uppercase">
+            Guardians
+          </h1>
+          <p class="text-xs text-textSub font-medium">
+            수호신을 터치하면 담당 성곽의 역사와 유래를 열어볼 수 있습니다.
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-3xl border border-slate-100 flex items-center justify-between text-xs font-bold shadow-sm">
+          <span class="flex items-center gap-2 text-textMain">
+            <i data-lucide="map" class="w-4 h-4 text-brandBlue"></i> 성곽 결계 코스
+          </span>
+          <span class="bg-blue-50 text-brandBlue px-3 py-1 rounded-full text-[11px] font-black">12개 성곽 거점 보호 중</span>
+        </div>
+
+        <div id="guardians-list-container" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== [탭 4: 마음 정화록] ==================== -->
+      <section id="tab-archive" class="space-y-5 pt-3 hidden">
+        <div class="text-center space-y-1">
+          <h1 class="font-title font-extrabold text-3xl tracking-tight text-textMain uppercase">
+            My Archive
+          </h1>
+          <p class="text-xs text-textSub font-medium">
+            스스로 흘린 땀방울과 구슬이 건넨 온기를 보관하는 서재
+          </p>
+        </div>
+
+        <div class="flex items-center p-1.5 bg-pillBg rounded-2xl">
+          <button onclick="switchArchiveSubView('books')" id="sub-btn-books" class="flex-1 py-2 rounded-xl text-xs font-title font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            <span>정화 서책</span>
+          </button>
+          <button onclick="switchArchiveSubView('calendar')" id="sub-btn-calendar" class="flex-1 py-2 rounded-xl text-xs font-title font-bold text-textSub hover:text-textMain transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            <span>오늘의 덕담 캘린더</span>
+          </button>
+        </div>
+
+        <!-- 1) 정화 서책 뷰 -->
+        <div id="archive-view-books" class="space-y-6">
+          <div class="pop-card p-5 space-y-4">
+            <h3 class="font-title font-bold text-sm text-textMain uppercase flex items-center gap-1.5">
+              <i data-lucide="edit-3" class="w-4 h-4 text-brandRed"></i> 성돌 하나 쌓기
+            </h3>
+
+            <div>
+              <label class="block text-[11px] font-bold text-textSub mb-1.5">흔들렸던 마음이나 조급함</label>
+              <input id="archive-input-worry" type="text" placeholder="예: 남의 성공을 보며 조급함과 질투가 일었다." class="w-full bg-pillBg border-none rounded-2xl px-4 py-3 text-xs text-textMain font-medium focus:outline-none focus:ring-2 focus:ring-brandBlue">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-textSub mb-1.5">스스로 흘린 땀방울과 실천</label>
+              <input id="archive-input-action" type="text" placeholder="예: 비교하는 대신 내 할 일에 30분 집중했다." class="w-full bg-pillBg border-none rounded-2xl px-4 py-3 text-xs text-textMain font-medium focus:outline-none focus:ring-2 focus:ring-brandBlue">
+            </div>
+
+            <button onclick="saveArchiveEntry()" class="w-full py-3.5 bg-brandBlue text-white font-title font-bold text-xs rounded-2xl shadow-lg uppercase tracking-wider hover:bg-brandRed transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="bookmark-plus" class="w-4 h-4 text-brandLime"></i> 서책으로 봉헌하기
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <h3 class="font-title font-bold text-sm text-textMain uppercase">
+                Purified Books
+              </h3>
+              <div class="flex items-center gap-2.5">
+                <span id="archive-books-count" class="text-xs font-extrabold text-brandBlue">0권 봉헌</span>
+                <button onclick="clearAllArchive()" id="btn-clear-all" class="text-[11px] font-bold text-slate-400 hover:text-brandRed transition-colors hidden">
+                  전체 비우기
+                </button>
+              </div>
+            </div>
+            <div id="archive-list-container" class="space-y-2.5"></div>
+          </div>
+        </div>
+
+        <!-- 2) 오늘의 덕담 캘린더 뷰 -->
+        <div id="archive-view-calendar" class="space-y-4 hidden">
+          <div class="pop-card p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <button onclick="changeCalendarMonth(-1)" class="w-8 h-8 rounded-full bg-pillBg hover:bg-slate-200 flex items-center justify-center text-textMain transition-colors">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+              <h3 id="cal-month-year" class="font-title font-black text-base text-brandBlue">2026년 9월</h3>
+              <button onclick="changeCalendarMonth(1)" class="w-8 h-8 rounded-full bg-pillBg hover:bg-slate-200 flex items-center justify-center text-textMain transition-colors">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-7 text-center text-[11px] font-black text-textSub">
+              <span class="text-brandRed">일</span>
+              <span>월</span>
+              <span>화</span>
+              <span>수</span>
+              <span>목</span>
+              <span>금</span>
+              <span class="text-brandBlue">토</span>
+            </div>
+
+            <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs font-bold"></div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-textSub">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-brandLime border border-brandBlue"></span>
+                <span>덕담 보관된 날</span>
+              </div>
+              <span id="cal-total-fortunes-badge" class="font-extrabold text-brandBlue">총 0일 기록됨</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex items-center justify-between px-1">
+              <h4 class="font-title font-bold text-sm text-textMain uppercase flex items-center gap-1.5">
+                <i data-lucide="sparkle" class="w-4 h-4 text-brandYellow fill-brandYellow"></i>
+                <span id="selected-date-title">선택한 날짜의 덕담</span>
+              </h4>
+            </div>
+
+            <div id="selected-fortune-card" class="pop-card p-5 bg-white border-2 border-brandBlue/20 space-y-2 relative overflow-hidden">
+              <p id="selected-fortune-text" class="text-xs font-semibold text-textMain leading-relaxed break-keep">
+                달력에서 날짜를 터치하면 그날 구슬이 건네준 따뜻한 덕담을 열어볼 수 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= [원클릭 맨 위로(TOP) 플로팅 버튼] ================= -->
+    <button onclick="scrollToTop()" id="btn-scroll-top" class="absolute bottom-24 right-5 z-40 w-11 h-11 rounded-full bg-brandBlue text-brandLime shadow-xl hover:bg-black transition-all duration-300 transform translate-y-6 opacity-0 pointer-events-none flex items-center justify-center border-2 border-white/60 active:scale-90" title="맨 위로 이동">
+      <i data-lucide="arrow-up" class="w-5 h-5 stroke-[2.5]"></i>
+    </button>
+
+    <!-- ================= 하단 네비게이션 ================= -->
+    <nav class="absolute bottom-0 inset-x-0 h-20 bg-white/95 border-t border-slate-100 backdrop-blur-md z-30 px-6 flex items-center justify-between">
+      <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center gap-1 text-brandBlue transition-all">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[10px] font-extrabold uppercase">Home</span>
+      </button>
+
+      <button onclick="switchTab('counsel')" id="nav-btn-counsel" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brandBlue transition-all">
+        <i data-lucide="help-circle" class="w-5 h-5"></i>
+        <span class="text-[10px] font-extrabold uppercase">Counsel</span>
+      </button>
+
+      <button onclick="switchTab('guardians')" id="nav-btn-guardians" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brandBlue transition-all">
+        <i data-lucide="compass" class="w-5 h-5"></i>
+        <span class="text-[10px] font-extrabold uppercase">Doseong</span>
+      </button>
+
+      <button onclick="switchTab('archive')" id="nav-btn-archive" class="flex flex-col items-center gap-1 text-slate-400 hover:text-brandBlue transition-all">
+        <i data-lucide="book-open" class="w-5 h-5"></i>
+        <span class="text-[10px] font-extrabold uppercase">Archive</span>
+      </button>
+    </nav>
+
+    <!-- ================= 수호신 성곽 역사 상세 팝업 모달 ================= -->
+    <div id="guardian-history-modal" class="fixed inset-0 z-50 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm hidden transition-opacity duration-300">
+      <div class="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border-4 border-brandBlue space-y-4 transform transition-all scale-95 duration-200" id="guardian-history-box">
+        <div class="flex items-center justify-between">
+          <span id="history-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black bg-brandBlue text-white uppercase">
+            한양도성 성곽 비화
+          </span>
+          <button onclick="closeGuardianHistoryModal()" class="w-8 h-8 rounded-full bg-pillBg flex items-center justify-center text-textSub hover:text-black font-black">
+            ✕
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3.5 bg-pillBg p-3.5 rounded-2xl">
+          <div id="history-avatar" class="w-14 h-14 rounded-xl bg-white p-1 shadow-sm shrink-0 flex items-center justify-center overflow-hidden"></div>
+          <div>
+            <h3 id="history-name-title" class="font-title font-black text-base text-textMain">모리 (쥐)</h3>
+            <p id="history-location-subtitle" class="text-xs font-black text-brandBlue">숙정문 (북대문)</p>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h4 class="text-xs font-black text-brandRed flex items-center gap-1">
+            <i data-lucide="landmark" class="w-3.5 h-3.5"></i>
+            <span>성곽 역사와 유래</span>
+          </h4>
+          <div class="p-4 rounded-2xl bg-brandYellow/25 border border-brandYellow/60 text-xs font-bold text-textMain leading-relaxed break-keep" id="history-description-text"></div>
+        </div>
+
+        <div class="p-3 bg-blue-50/70 border border-blue-100 rounded-xl flex items-start gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-brandBlue shrink-0 mt-0.5"></i>
+          <p id="history-mission-hint" class="text-[11px] font-bold text-brandBlue leading-snug"></p>
+        </div>
+
+        <button onclick="closeGuardianHistoryModal()" class="w-full py-3 bg-brandBlue text-white font-title font-bold text-xs rounded-xl shadow-md hover:bg-black transition-colors">
+          확인
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= 마음 구슬 랜덤 운세 & 덕담 팝업 모달 ================= -->
+    <div id="fortune-modal" class="fixed inset-0 z-50 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm hidden transition-opacity duration-300">
+      <div class="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border-4 border-brandLime space-y-4 text-center transform transition-all scale-95 duration-200" id="fortune-card-box">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black bg-brandBlue text-white uppercase">
+            <span>✦ 마음 구슬의 축복</span>
+          </span>
+          <button onclick="closeFortuneModal()" class="w-8 h-8 rounded-full bg-pillBg flex items-center justify-center text-textSub hover:text-black font-black">
+            ✕
+          </button>
+        </div>
+
+        <div class="my-1 flex justify-center">
+          <div class="w-24 h-24 flex items-center justify-center drop-shadow-lg">
+            <svg viewBox="0 0 200 200" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="modalGlassSphere" cx="35%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                  <stop offset="25%" stop-color="#D7EBFF" stop-opacity="0.6"/>
+                  <stop offset="65%" stop-color="#C29BFF" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#4B7BFF" stop-opacity="0.75"/>
+                </radialGradient>
+                <linearGradient id="modalStarPink" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFD6F3"/>
+                  <stop offset="45%" stop-color="#F272C8"/>
+                  <stop offset="100%" stop-color="#AF2F99"/>
+                </linearGradient>
+                <linearGradient id="modalCushion" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#7B2CBF"/>
+                  <stop offset="100%" stop-color="#3C096C"/>
+                </linearGradient>
+              </defs>
+              <path d="M22 152 C26 138 46 134 60 148 C76 136 124 136 140 148 C154 134 174 138 178 152 C184 168 168 184 148 186 C124 188 76 188 52 186 C32 184 16 168 22 152 Z" fill="url(#modalCushion)"/>
+              <circle cx="100" cy="94" r="74" fill="url(#modalGlassSphere)"/>
+              <circle cx="100" cy="94" r="73" stroke="#8EB4FF" stroke-width="2" opacity="0.6"/>
+              <path d="M100 48 L114 74 L142 80 L122 102 L126 130 L100 118 L74 130 L78 102 L58 80 L86 74 Z" fill="#FFF9C4" stroke="#FFF" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M100 52 L112 76 L138 81 L120 100 L124 125 L100 114 L76 125 L80 100 L62 81 L88 76 Z" fill="url(#modalStarPink)"/>
+              <path d="M100 52 L100 92 L112 76 Z" fill="#FFE4F8" opacity="0.8"/>
+              <path d="M138 81 L100 92 L120 100 Z" fill="#C026D3" opacity="0.6"/>
+              <path d="M124 125 L100 92 L100 114 Z" fill="#86198F" opacity="0.6"/>
+              <path d="M76 125 L100 92 L80 100 Z" fill="#C026D3" opacity="0.5"/>
+              <path d="M62 81 L100 92 L88 76 Z" fill="#F5D0FE" opacity="0.8"/>
+              <path d="M46 54 C60 38 80 30 102 30" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <h3 class="font-title font-black text-lg text-brandBlue uppercase">앞으로의 운세 & 다정한 덕담</h3>
+          <p class="text-[11px] text-textSub">열두 수호신의 온기가 [MY ARCHIVE] 덕담 캘린더에 저장되었습니다.</p>
+        </div>
+
+        <div class="bg-brandYellow/30 border border-brandYellow/60 p-5 rounded-2xl">
+          <p id="fortune-text-content" class="text-sm font-bold text-textMain leading-relaxed break-keep"></p>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <button onclick="drawRandomFortune()" class="flex-1 py-3 bg-brandBlue text-white font-title font-bold text-xs rounded-xl shadow-md hover:bg-black transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brandYellow"></i>
+            <span>다른 덕담 뽑기</span>
+          </button>
+          <button onclick="closeFortuneModal()" class="px-5 py-3 bg-pillBg text-textMain font-title font-bold text-xs rounded-xl hover:bg-slate-200 transition-colors">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 토스트 알림 -->
+    <div id="app-toast" class="absolute top-16 inset-x-6 p-3.5 rounded-2xl bg-brandBlue text-white text-xs font-bold text-center shadow-2xl z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+      알림 내용이 표시됩니다.
+    </div>
+
+  </div>
+
+  <script>
+    const BRAND_COLORS = [
+      { bg: "bg-[#DE4A3F]", text: "text-white", tag: "bg-white/20 text-white" },
+      { bg: "bg-[#002FCA]", text: "text-white", tag: "bg-white/20 text-white" },
+      { bg: "bg-[#F6E575]", text: "text-[#1A1C20]", tag: "bg-black/10 text-[#1A1C20]" },
+      { bg: "bg-[#CEF2A0]", text: "text-[#1A1C20]", tag: "bg-black/10 text-[#1A1C20]" }
+    ];
+
+    const FORTUNE_LIST = [
+      "가만히 애써온 그 모든 시간들이, 머지않아 당신 마음에 꼭 맞는 예쁜 열매를 맺을 거예요.",
+      "남들은 모르게 묵묵히 보낸 밤들도, 당신 안에는 차곡차곡 가장 단단한 힘으로 쌓이고 있어요.",
+      "망설이며 걸어온 발걸음마저 다 소중해요. 돌아보면 당신만의 참 고운 길이 되어 있을 테니까요.",
+      "스스로를 믿고 다독여준 그 마음은, 결코 흩어지지 않고 더 큰 다정함이 되어 돌아올 거예요.",
+      "처음에 가졌던 서툰 불안들은 잊어도 괜찮아요. 당신은 생각보다 훨씬 더 멋진 것들을 만들어냈어요.",
+      "조급해하지 않아도 돼요. 당신의 계절이 오면 가장 자연스럽고 예쁜 꽃이 피어날 테니까요.",
+      "작은 것 하나에도 정성을 담았던 당신의 마음을, 세상도 곧 따스하게 알아봐 줄 거예요.",
+      "흩어져서 어지럽던 생각들이 포근하게 자리를 잡고, 마침내 편안한 마침표를 찍게 될 거예요.",
+      "낯선 시작 앞에 조금 떨려도 괜찮아요. 당신 안에 품은 빛이 생각보다 훨씬 더 깊고 넓거든요.",
+      "오래도록 찾아 헤매던 질문에, 마음에 스며들듯 편안하고 명쾌한 답이 닿을 거예요.",
+      "당신의 결을 있는 그대로 사랑해 주고, 말없이 곁을 지켜줄 따뜻한 인연이 다가오고 있어요.",
+      "닫힌 줄만 알았던 문을 살짝 밀어보면, 당신을 반겨줄 포근한 세상이 활짝 열릴 거예요.",
+      "그동안 부딪히며 배웠던 모든 순간들이, 앞으로의 걸음을 지켜줄 든든한 등불이 되어줄 거예요.",
+      "지나치던 길모퉁이의 작은 풍경 하나도 당신의 마음에 번져 좋은 영감이 되어줄 거예요.",
+      "마음속으로 오래 그려온 따뜻한 장면들이, 하나둘 당신의 현실이 되어 찾아올 거예요.",
+      "숨 가쁜 하루 끝에 잠시 숨을 고르면, 곁에 머물던 다정하고 소소한 행복들이 보일 거예요.",
+      "무언가로 가득 채우려 애쓰지 않아도 돼요. 지금의 당신 모습 그대로도 이미 충분히 온전해요.",
+      "따뜻한 밥 한 끼 꼭 챙겨 드세요. 정성껏 건넨 안부 하나가 지친 하루를 든든하게 받쳐줄 테니까요.",
+      "빈틈이 있어도 참 괜찮아요. 당신이 남겨둔 그 여백마저 누군가에겐 쉼터가 되어주거든요.",
+      "조금 지쳐 있던 마음에 살랑이는 기분 좋은 바람이 불어와, 당신을 부드럽게 토닥여 줄 거예요.",
+      "마음을 나눌 수 있는 따스한 대화 속에서, 얼어있던 걱정과 피로가 사르르 녹아내릴 거예요.",
+      "남들의 속도에 맞추지 않아도 괜찮아요. 지금 걷고 있는 당신만의 속도가 가장 알맞고 아름다워요.",
+      "무심코 지나칠 뻔한 평범한 오늘 하루 안에도, 당신을 미소 짓게 할 작은 기적이 숨어 있어요.",
+      "당신이 가진 맑고 포근한 기운 덕분에, 주변 사람들까지 덩달아 따뜻한 웃음을 짓게 될 거예요.",
+      "얽혀있던 일들이 풀리는 타이밍마저 다정해서, 마치 선물처럼 모든 게 자연스레 흘러갈 거예요.",
+      "온종일 당신을 무겁게 짓누르던 걱정들이, 시원한 저녁 바람에 가볍게 날아가길 바라요.",
+      "누군가에게 무심코 건넸던 당신의 따뜻한 눈길이, 몇 배의 다정한 복이 되어 품에 안길 거예요.",
+      "오늘 만난 작은 우연 하나가, 내일의 당신을 활짝 웃게 할 소중한 씨앗이 되어줄 거예요.",
+      "어디로 발걸음을 옮기든, 당신을 아끼고 도우려는 따뜻한 손길들이 늘 가까이 머물러 있을 거예요.",
+      "지나온 모든 날이 참 애틋하고 귀해요. 앞으로 당신 앞에 펼쳐질 날들은 훨씬 더 눈부시고 다정할 거예요."
+    ];
+
+    const ZODIAC_CHAR_SVGS = {
+      1: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><circle cx="24" cy="40" r="18" fill="#BCC6F7" stroke="#3A467C" stroke-width="2.5"/><circle cx="24" cy="40" r="11" fill="#FFAEC9"/><circle cx="76" cy="40" r="18" fill="#BCC6F7" stroke="#3A467C" stroke-width="2.5"/><circle cx="76" cy="40" r="11" fill="#FFAEC9"/><path d="M72 75 C88 65 92 48 86 36" fill="none" stroke="#9EAAEA" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="56" r="26" fill="#D3DCFD" stroke="#3A467C" stroke-width="3"/><ellipse cx="40" cy="52" rx="4" ry="7" fill="#1C2042"/><ellipse cx="60" cy="52" rx="4" ry="7" fill="#1C2042"/><circle cx="41" cy="49" r="1.5" fill="#FFF"/><circle cx="61" cy="49" r="1.5" fill="#FFF"/><ellipse cx="50" cy="62" rx="4" ry="2.5" fill="#FF7096"/><path d="M45 68 Q50 72 55 68" fill="none" stroke="#1C2042" stroke-width="2.5" stroke-linecap="round"/><path d="M28 80 L72 80 L68 114 L32 114 Z" fill="#FFFFFF" stroke="#3A467C" stroke-width="2.5"/><path d="M42 80 L50 94 L58 80" fill="none" stroke="#2A9D8F" stroke-width="4" stroke-linecap="round"/><rect x="36" y="114" width="10" height="12" rx="4" fill="#BCC6F7" stroke="#3A467C" stroke-width="2"/><rect x="54" y="114" width="10" height="12" rx="4" fill="#BCC6F7" stroke="#3A467C" stroke-width="2"/></svg>`,
+      2: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M18 36 Q10 14 26 22 Z" fill="#D89240" stroke="#75430E" stroke-width="2.5"/><path d="M82 36 Q90 14 74 22 Z" fill="#D89240" stroke="#75430E" stroke-width="2.5"/><path d="M24 24 Q32 10 42 26 Z" fill="#FFF2DF" stroke="#BD772A" stroke-width="2.5"/><path d="M76 24 Q68 10 58 26 Z" fill="#FFF2DF" stroke="#BD772A" stroke-width="2.5"/><path d="M20 44 C20 28 80 28 80 44 C82 66 74 76 50 76 C26 76 18 66 20 44 Z" fill="#F4B063" stroke="#75430E" stroke-width="3"/><ellipse cx="38" cy="45" rx="4.5" ry="7" fill="#2D1702"/><ellipse cx="62" cy="45" rx="4.5" ry="7" fill="#2D1702"/><circle cx="39.5" cy="42.5" r="1.6" fill="#FFF"/><circle cx="63.5" cy="42.5" r="1.6" fill="#FFF"/><ellipse cx="50" cy="59" rx="18" ry="10" fill="#FDE1BF"/><ellipse cx="44" cy="59" rx="2.5" ry="3.5" fill="#75430E"/><ellipse cx="56" cy="59" rx="2.5" ry="3.5" fill="#75430E"/><path d="M22 76 L78 76 L86 112 L14 112 Z" fill="#FFFFFF" stroke="#75430E" stroke-width="3"/><path d="M30 76 Q50 86 70 76" fill="none" stroke="#2A9D8F" stroke-width="4.5"/><circle cx="50" cy="88" r="7.5" fill="#FFC72C" stroke="#8E5B00" stroke-width="2"/><path d="M24 112 L46 112 L46 126 L24 126 Z" fill="#D89240" stroke="#75430E" stroke-width="2.5"/><path d="M54 112 L76 112 L76 126 L54 126 Z" fill="#D89240" stroke="#75430E" stroke-width="2.5"/></svg>`,
+      3: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><circle cx="26" cy="28" r="11" fill="#FF7B00" stroke="#7A2800" stroke-width="2.5"/><circle cx="26" cy="28" r="6" fill="#FFE5CC"/><circle cx="74" cy="28" r="11" fill="#FF7B00" stroke="#7A2800" stroke-width="2.5"/><circle cx="74" cy="28" r="6" fill="#FFE5CC"/><path d="M78 84 Q94 82 92 64 Q90 54 84 54" fill="none" stroke="#FF7B00" stroke-width="7" stroke-linecap="round"/><path d="M78 84 Q94 82 92 64 Q90 54 84 54" fill="none" stroke="#7A2800" stroke-width="1.8" stroke-dasharray="4 6"/><rect x="24" y="30" width="52" height="48" rx="18" fill="#FF9426" stroke="#7A2800" stroke-width="3"/><path d="M42 32 L50 42 L58 32" fill="none" stroke="#5E1E00" stroke-width="3" stroke-linecap="round"/><path d="M26 48 L35 50 M74 48 L65 50" stroke="#5E1E00" stroke-width="3" stroke-linecap="round"/><ellipse cx="40" cy="52" rx="4.5" ry="6.5" fill="#260C00"/><ellipse cx="60" cy="52" rx="4.5" ry="6.5" fill="#260C00"/><circle cx="41.5" cy="49.5" r="1.5" fill="#FFF"/><circle cx="61.5" cy="49.5" r="1.5" fill="#FFF"/><polygon points="50,60 45,65 55,65" fill="#FF4D6D"/><path d="M43 69 Q50 74 57 69" fill="none" stroke="#260C00" stroke-width="2.5" stroke-linecap="round"/><path d="M26 78 L74 78 L68 112 L32 112 Z" fill="#FFFFFF" stroke="#7A2800" stroke-width="2.5"/><path d="M40 78 L50 90 L60 78" fill="none" stroke="#DE4A3F" stroke-width="3.5" stroke-linecap="round"/><rect x="34" y="112" width="13" height="14" rx="4" fill="#FF7B00" stroke="#7A2800" stroke-width="2.5"/><rect x="53" y="112" width="13" height="14" rx="4" fill="#FF7B00" stroke="#7A2800" stroke-width="2.5"/></svg>`,
+      4: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><ellipse cx="38" cy="24" rx="7" ry="20" fill="#FF7B96" stroke="#871A35" stroke-width="2.5"/><ellipse cx="38" cy="24" rx="4" ry="14" fill="#FFE5EC"/><ellipse cx="62" cy="24" rx="7" ry="20" fill="#FF7B96" stroke="#871A35" stroke-width="2.5"/><ellipse cx="62" cy="24" rx="4" ry="14" fill="#FFE5EC"/><ellipse cx="50" cy="58" rx="22" ry="24" fill="#FFA5BA" stroke="#871A35" stroke-width="3"/><ellipse cx="41" cy="56" rx="4.5" ry="7" fill="#3D0B18"/><ellipse cx="59" cy="56" rx="4.5" ry="7" fill="#3D0B18"/><circle cx="42.5" cy="53.5" r="1.6" fill="#FFF"/><circle cx="60.5" cy="53.5" r="1.6" fill="#FFF"/><circle cx="36" cy="64" r="4" fill="#FF3366" opacity="0.4"/><circle cx="64" cy="64" r="4" fill="#FF3366" opacity="0.4"/><polygon points="50,63 46,67 54,67" fill="#C9184A"/><path d="M46 70 Q50 73 54 70" fill="none" stroke="#3D0B18" stroke-width="2" stroke-linecap="round"/><path d="M34 82 L66 82 L76 122 L24 122 Z" fill="#FFFFFF" stroke="#871A35" stroke-width="2.5"/><path d="M42 82 L50 94 L58 82" fill="none" stroke="#845EC2" stroke-width="3" stroke-linecap="round"/></svg>`,
+      5: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M32 26 L26 8 M26 16 L18 12" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/><path d="M68 26 L74 8 M74 16 L82 12" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/><path d="M26 44 C24 28 76 28 74 44 C76 64 68 76 50 76 C32 76 24 64 26 44 Z" fill="#67E8F9" stroke="#0E7490" stroke-width="3"/><path d="M24 58 Q12 50 20 66 Q26 64 30 62" fill="#A5F3FC" stroke="#0E7490" stroke-width="2"/><path d="M76 58 Q88 50 80 66 Q74 64 70 62" fill="#A5F3FC" stroke="#0E7490" stroke-width="2"/><ellipse cx="40" cy="48" rx="4.5" ry="7" fill="#155E75"/><ellipse cx="60" cy="48" rx="4.5" ry="7" fill="#155E75"/><circle cx="41.5" cy="45.5" r="1.5" fill="#FFF"/><circle cx="61.5" cy="45.5" r="1.5" fill="#FFF"/><circle cx="46" cy="58" r="1.8" fill="#0E7490"/><circle cx="54" cy="58" r="1.8" fill="#0E7490"/><path d="M43 64 Q50 68 57 64" fill="none" stroke="#155E75" stroke-width="2.5" stroke-linecap="round"/><path d="M28 76 L72 76 L68 116 L32 116 Z" fill="#FFFFFF" stroke="#0E7490" stroke-width="2.5"/><path d="M42 76 L50 88 L58 76" fill="none" stroke="#002FCA" stroke-width="3.5" stroke-linecap="round"/><rect x="36" y="116" width="11" height="12" rx="3" fill="#67E8F9" stroke="#0E7490" stroke-width="2"/><rect x="53" y="116" width="11" height="12" rx="3" fill="#67E8F9" stroke="#0E7490" stroke-width="2"/></svg>`,
+      6: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M50 30 C30 30 28 50 40 60 C48 68 66 64 70 74 C72 82 66 92 50 92 C38 92 30 84 28 82" fill="none" stroke="#4ADE80" stroke-width="15" stroke-linecap="round"/><path d="M50 30 C30 30 28 50 40 60 C48 68 66 64 70 74 C72 82 66 92 50 92 C38 92 30 84 28 82" fill="none" stroke="#15803D" stroke-width="2.5"/><ellipse cx="38" cy="40" rx="16" ry="14" fill="#86EFAC" stroke="#15803D" stroke-width="2.5"/><ellipse cx="32" cy="38" rx="4" ry="2.5" fill="#14532D"/><ellipse cx="44" cy="38" rx="4" ry="2.5" fill="#14532D"/><path d="M28 34 Q33 37 36 34 M40 34 Q45 37 48 34" stroke="#14532D" stroke-width="2.2" stroke-linecap="round"/><path d="M35 48 Q38 51 41 48" fill="none" stroke="#14532D" stroke-width="2"/><rect x="30" y="56" width="20" height="14" rx="5" fill="#FFF" stroke="#15803D" stroke-width="2"/><path d="M35 56 L40 64 L45 56" fill="none" stroke="#002FCA" stroke-width="2.8" stroke-linecap="round"/></svg>`,
+      7: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M36 16 Q50 6 64 18 Q72 38 68 58" fill="none" stroke="#6F280A" stroke-width="10" stroke-linecap="round"/><path d="M28 22 L32 10 L40 20 Z" fill="#8B3A14" stroke="#4A1804" stroke-width="2"/><path d="M28 34 C28 22 62 20 66 34 C68 46 64 70 50 70 C36 70 28 48 28 34 Z" fill="#A84C1C" stroke="#4A1804" stroke-width="3"/><ellipse cx="40" cy="36" rx="4" ry="6.5" fill="#240B01"/><ellipse cx="54" cy="36" rx="4" ry="6.5" fill="#240B01"/><circle cx="41.5" cy="34" r="1.4" fill="#FFF"/><circle cx="55.5" cy="34" r="1.4" fill="#FFF"/><ellipse cx="47" cy="56" rx="14" ry="9" fill="#C9652A"/><ellipse cx="42" cy="54" rx="2" ry="3" fill="#4A1804"/><ellipse cx="52" cy="54" rx="2" ry="3" fill="#4A1804"/><path d="M32 70 L68 70 L64 112 L36 112 Z" fill="#FFFFFF" stroke="#4A1804" stroke-width="2.5"/><path d="M46 80 L54 80 L50 88 Z" fill="#F97316"/><path d="M48 80 L48 76" stroke="#22C55E" stroke-width="2.5"/><rect x="38" y="112" width="10" height="14" rx="3" fill="#8B3A14" stroke="#4A1804" stroke-width="2"/><rect x="52" y="112" width="10" height="14" rx="3" fill="#8B3A14" stroke="#4A1804" stroke-width="2"/></svg>`,
+      8: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M22 36 C16 30 20 20 30 24 C34 26 32 34 24 34" fill="none" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/><path d="M78 36 C84 30 80 20 70 24 C66 26 68 34 76 34" fill="none" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/><ellipse cx="50" cy="50" rx="26" ry="24" fill="#27272A" stroke="#09090B" stroke-width="3"/><path d="M28 36 Q50 26 72 36" fill="none" stroke="#F4F4F5" stroke-width="9" stroke-linecap="round"/><ellipse cx="40" cy="50" rx="4.5" ry="6.5" fill="#FFFFFF"/>
+      <ellipse cx="60" cy="50" rx="4.5" ry="6.5" fill="#FFFFFF"/><circle cx="41.5" cy="50" r="3" fill="#18181B"/><circle cx="58.5" cy="50" r="3" fill="#18181B"/><ellipse cx="50" cy="60" rx="4" ry="3" fill="#F43F5E"/><rect x="32" y="74" width="36" height="38" rx="8" fill="#F8FAFC" stroke="#09090B" stroke-width="2.5"/><path d="M42 74 L50 86 L58 74" fill="none" stroke="#002FCA" stroke-width="3.5" stroke-linecap="round"/><rect x="38" y="112" width="9" height="12" rx="3" fill="#27272A" stroke="#09090B" stroke-width="2"/><rect x="53" y="112" width="9" height="12" rx="3" fill="#27272A" stroke="#09090B" stroke-width="2"/></svg>`,
+      9: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><circle cx="20" cy="46" r="12" fill="#B45309" stroke="#78350F" stroke-width="2.5"/><circle cx="20" cy="46" r="7" fill="#FDE68A"/><circle cx="80" cy="46" r="12" fill="#B45309" stroke="#78350F" stroke-width="2.5"/><circle cx="80" cy="46" r="7" fill="#FDE68A"/><path d="M74 62 C92 52 96 32 90 22" fill="none" stroke="#B45309" stroke-width="4.5" stroke-linecap="round"/><circle cx="50" cy="48" r="24" fill="#D97706" stroke="#78350F" stroke-width="3"/><ellipse cx="50" cy="53" rx="17" ry="13" fill="#FEF3C7"/><ellipse cx="43" cy="43" rx="4.5" ry="6" fill="#451A03"/><ellipse cx="57" cy="43" rx="4.5" ry="6.5" fill="#451A03"/><circle cx="44.5" cy="41.5" r="1.5" fill="#FFF"/><circle cx="58.5" cy="41.5" r="1.5" fill="#FFF"/><path d="M43 56 Q50 64 57 56 Z" fill="#E11D48"/><path d="M32 72 L68 72 L64 112 L36 112 Z" fill="#FFFFFF" stroke="#78350F" stroke-width="2.5"/><path d="M44 72 L50 82 L56 72" fill="none" stroke="#DE4A3F" stroke-width="3.5" stroke-linecap="round"/><rect x="38" y="112" width="10" height="14" rx="3" fill="#B45309" stroke="#78350F" stroke-width="2"/><rect x="52" y="112" width="10" height="14" rx="3" fill="#B45309" stroke="#78350F" stroke-width="2"/></svg>`,
+      10: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><path d="M50 12 C42 20 42 32 50 32 C58 32 58 20 50 12" fill="#DC2626" stroke="#991B1B" stroke-width="2.5"/><path d="M58 18 C66 22 66 32 58 32" fill="#DC2626"/><path d="M72 68 Q88 64 86 84" fill="none" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/><ellipse cx="50" cy="54" rx="22" ry="26" fill="#FFFBEB" stroke="#B45309" stroke-width="2.5"/><ellipse cx="42" cy="46" rx="4" ry="6.5" fill="#451A03"/><ellipse cx="58" cy="46" rx="4" ry="6.5" fill="#451A03"/><circle cx="43.5" cy="43.5" r="1.5" fill="#FFF"/><circle cx="59.5" cy="43.5" r="1.5" fill="#FFF"/><polygon points="50,52 42,59 58,59" fill="#F59E0B" stroke="#B45309" stroke-width="2"/><ellipse cx="50" cy="65" rx="4" ry="6" fill="#EF4444"/><path d="M32 78 L68 78 L64 112 L36 112 Z" fill="#FFFFFF" stroke="#B45309" stroke-width="2.5"/><path d="M43 78 L50 88 L57 78" fill="none" stroke="#DE4A3F" stroke-width="3.5" stroke-linecap="round"/><path d="M42 112 L42 124 M58 112 L58 124" stroke="#F59E0B" stroke-width="3.5" stroke-linecap="round"/></svg>`,
+      11: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><ellipse cx="22" cy="42" rx="10" ry="20" fill="#EAB308" stroke="#A16207" stroke-width="2.5" transform="rotate(-15 22 42)"/><ellipse cx="78" cy="42" rx="10" ry="20" fill="#EAB308" stroke="#A16207" stroke-width="2.5" transform="rotate(15 78 42)"/><path d="M72 90 Q88 88 86 74" fill="none" stroke="#EAB308" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="48" r="24" fill="#FDE047" stroke="#A16207" stroke-width="3"/><ellipse cx="40" cy="44" rx="4.5" ry="6.5" fill="#422006"/><ellipse cx="60" cy="44" rx="4.5" ry="6.5" fill="#422006"/><circle cx="41.5" cy="41.5" r="1.5" fill="#FFF"/><circle cx="61.5" cy="41.5" r="1.5" fill="#FFF"/><ellipse cx="50" cy="54" rx="5" ry="3.5" fill="#1C1917"/><path d="M44 60 Q50 65 56 60" fill="none" stroke="#422006" stroke-width="2.5" stroke-linecap="round"/><path d="M32 72 L68 72 L64 112 L36 112 Z" fill="#FFFFFF" stroke="#A16207" stroke-width="2.5"/><path d="M44 72 L50 82 L56 72" fill="none" stroke="#CEF2A0" stroke-width="3.5" stroke-linecap="round"/><rect x="38" y="112" width="10" height="14" rx="3" fill="#EAB308" stroke="#A16207" stroke-width="2"/><rect x="52" y="112" width="10" height="14" rx="3" fill="#EAB308" stroke="#A16207" stroke-width="2"/></svg>`,
+      12: `<svg viewBox="0 0 100 130" class="w-full h-full object-contain"><polygon points="26,34 18,16 38,24" fill="#F472B6" stroke="#BE185D" stroke-width="2.5"/><polygon points="74,34 82,16 62,24" fill="#F472B6" stroke="#BE185D" stroke-width="2.5"/><path d="M78 88 Q90 84 86 94" fill="none" stroke="#F472B6" stroke-width="4" stroke-linecap="round"/><ellipse cx="50" cy="54" rx="28" ry="26" fill="#FBCFE8" stroke="#BE185D" stroke-width="3"/><ellipse cx="38" cy="46" rx="4.5" ry="6.5" fill="#500724"/><ellipse cx="62" cy="46" rx="4.5" ry="6.5" fill="#500724"/><circle cx="39.5" cy="43.5" r="1.5" fill="#FFF"/><circle cx="63.5" cy="43.5" r="1.5" fill="#FFF"/><circle cx="28" cy="56" r="4.5" fill="#F43F5E" opacity="0.4"/><circle cx="72" cy="56" r="4.5" fill="#F43F5E" opacity="0.4"/><ellipse cx="50" cy="58" rx="11" ry="8" fill="#F472B6" stroke="#BE185D" stroke-width="2"/><ellipse cx="45.5" cy="58" rx="2.5" ry="3.5" fill="#831843"/><ellipse cx="54.5" cy="58" rx="2.5" ry="3.5" fill="#831843"/><path d="M30 80 L70 80 L66 114 L34 114 Z" fill="#FFFFFF" stroke="#BE185D" stroke-width="2.5"/><path d="M43 80 L50 90 L57 80" fill="none" stroke="#DE4A3F" stroke-width="3.5" stroke-linecap="round"/><rect x="36" y="114" width="11" height="12" rx="3" fill="#F472B6" stroke="#BE185D" stroke-width="2"/><rect x="53" y="114" width="11" height="12" rx="3" fill="#F472B6" stroke="#BE185D" stroke-width="2"/></svg>`
+    };
+
+    const GUARDIAN_ACTIONS = [
+      { id: 1, name: "모리", animal: "쥐", power: "계획의 힘", desc: "엉킨 생각과 걱정거리 3가지 적어 정리하기", location: "숙정문", colorIndex: 0 },
+      { id: 2, name: "바우", animal: "소", power: "쉼의 힘", desc: "퇴근 후 무리한 일정을 멈추고 온전히 나만을 위해 푹 쉬기", location: "혜화문", colorIndex: 1 },
+      { id: 3, name: "호이", animal: "호랑이", power: "용기의 힘", desc: "부당하거나 마음에 내키지 않는 일에 단호히 거절하기", location: "인왕산", colorIndex: 2 },
+      { id: 4, name: "다미", animal: "토끼", power: "경청의 힘", desc: "남의 시선을 끄고 내 진짜 속마음에 가만히 귀 기울여주기", location: "창의문", colorIndex: 3 },
+      { id: 5, name: "청이", animal: "용", power: "영감의 힘", desc: "틀에 박힌 일상을 벗어나 새로운 길이나 낭만을 시도하기", location: "백악산", colorIndex: 0 },
+      { id: 6, name: "해리", animal: "뱀", power: "통찰의 힘", desc: "불안과 시기심 뒤에 숨겨진 내 진짜 결핍을 차분히 마주하기", location: "돈의문", colorIndex: 1 },
+      { id: 7, name: "포니", animal: "말", power: "자유의 힘", desc: "남들 눈치 보지 않고 내가 좋아하는 취향을 당당하게 즐기기", location: "숭례문", colorIndex: 2 },
+      { id: 8, name: "포포", animal: "양", power: "자비의 힘", desc: "과거의 실수에 매달려 스스로를 자책하지 않고 안아주기", location: "낙산", colorIndex: 3 },
+      { id: 9, name: "조이", animal: "원숭이", power: "유쾌의 힘", desc: "꼬이고 심각해진 상황을 가벼운 웃음과 유머로 넘겨보기", location: "흥인지문", colorIndex: 0 },
+      { id: 10, name: "새벽", animal: "닭", power: "결단의 힘", desc: "미루고 싶었던 일이나 흐트러진 루틴을 딱 10분만 즉시 해내기", location: "광희문", colorIndex: 1 },
+      { id: 11, name: "도아", animal: "개", power: "신뢰의 힘", desc: "소중한 사람에게 먼저 다가가 따뜻한 안부와 내 편이 되어주기", location: "목멱산", colorIndex: 2 },
+      { id: 12, name: "도니", animal: "돼지", power: "감사의 힘", desc: "스쳐 지나칠 뻔한 오늘 하루의 소소한 행복 한 조각 발견하기", location: "소의문", colorIndex: 3 }
+    ];
+
+    /* ==========================================================================
+       [인왕산 + 모리/바우/다미/청이/포니/포포/조이/새벽/도아/도니 역사적 설명 수정 완료]
+       ========================================================================== */
+    const ZODIAC_DATA = [
+      {
+        id: 1,
+        animal: "쥐",
+        name: "모리",
+        location: "숙정문 (북대문)",
+        worryTitle: "결정 장애와 우유부단",
+        worryDetail: "선택에 대한 부담과 실패 두려움",
+        message: "섬세하게 기록해 온 길을 믿어봐. 작은 것부터 차근차근 결정하면 돼.",
+        quest: "사소한 점심 메뉴를 10초 안에 스스로 결정하기",
+        colorIndex: 0,
+        history: "서울 도성의 북쪽 대문으로, 음양오행 중 물(水)의 기운을 다스리던 성문입니다. 나라에 가뭄이 들면 비를 기원하며 숙정문을 열고 남대문을 닫았으며, 반대로 홍수가 나면 숙정문을 닫고 남대문을 열어 음양의 기운과 재해를 다스렸던 지혜의 결계(관문)입니다."
+      },
+      {
+        id: 2,
+        animal: "소",
+        name: "바우",
+        location: "혜화문 (동소문)",
+        worryTitle: "끝없는 조급함",
+        worryDetail: "속도에 쫓기는 마음과 여유 부족",
+        message: "서두르지 않아도 괜찮아. 나처럼 천천히, 우직하게 걸어가면 충분해.",
+        quest: "스마트폰을 내려놓고 3분 동안 호흡 가다듬기",
+        colorIndex: 1,
+        history: "도성의 동북쪽을 지키던 관문으로, 과거 강원도와 함경도 지역에서 도성으로 들어오는 길목이었습니다. 문루 천장에 용 대신 새들의 왕인 봉황(봉새)을 그려 넣어 날짐승이 곡식을 쪼아먹지 못하도록 비손했던, 백성을 향한 다정함이 깃들어 있습니다."
+      },
+      {
+        id: 3,
+        animal: "호랑이",
+        name: "호이",
+        location: "인왕산 (서산)",
+        worryTitle: "변화에 대한 두려움",
+        worryDetail: "안주하고 싶은 마음과 도전의 회피",
+        message: "쯧, 뭘 겁내고 있어? 내가 제일 먼저 앞장설 테니까 내 뒤나 잘 따라와!",
+        quest: "평소 걷던 길 대신 새로운 골목길로 가보기",
+        colorIndex: 2,
+        history: "풍수지리상 한양 도성의 우백호(右白虎)에 해당하는 서쪽의 명산입니다. 가파른 기암괴석과 험준한 능선 위에 한양도성이 축조되어 서북 방면의 천연 방어벽 역할을 하였으며, 예로부터 '인왕산 호랑이' 설화와 함께 우백호의 웅혼한 기상이 깃든 유서 깊은 산입니다."
+      },
+      {
+        id: 4,
+        animal: "토끼",
+        name: "다미",
+        location: "창의문 (북소문)",
+        worryTitle: "인간관계와 소통의 피로",
+        worryDetail: "적당한 거리두기의 어려움",
+        message: "억지로 애쓰지 마. 잠시 쉬어가며 네 진짜 마음소리에 귀 기울여봐.",
+        quest: "피로한 대화방에 1시간 동안 의도적으로 침묵하기",
+        colorIndex: 3,
+        history: "자하문(紫霞門)이라는 고운 별칭으로도 불리며, 한양도성의 소문(小門) 중 유일하게 옛 문루의 원형을 온전하게 간직하고 있습니다. 인왕산과 백악산 사이 고즈넉한 바람이 드나드는 치유의 통로입니다."
+      },
+      {
+        id: 5,
+        animal: "용",
+        name: "청이",
+        location: "백악산 (북주산)",
+        worryTitle: "자아 정체성 혼란과 무기력",
+        worryDetail: "내가 누구인지, 왜 사는지에 대한 허무함",
+        message: "네 안에는 훨씬 더 커다란 세상이 숨어 있어! 나랑 같이 넓은 세계로 떠나볼까?",
+        quest: "어린 시절 순수하게 가슴 뛰었던 꿈 1가지 적기",
+        colorIndex: 0,
+        history: "조선 왕조의 법궁인 경복궁의 바로 뒤편을 웅장하게 받치고 선 한양의 주산(主山)입니다. 18.6km 한양도성 순성길 중 가장 높고 신령스러운 능선으로, 수도 한양의 굳건한 중심축이자 성곽 결계의 심장부입니다."
+      },
+      {
+        id: 6,
+        animal: "뱀",
+        name: "해리",
+        location: "돈의문 터 (서대문)",
+        worryTitle: "완벽주의와 번아웃",
+        worryDetail: "과도한 기준과 에너지는 고갈",
+        message: "스스로를 아프게 가두는 허물은 이제 벗어 던져. 차갑게 내려놓아야 다시 숨 쉴 수 있어.",
+        quest: "오늘 할 일 중 1가지를 내일로 과감히 미루기",
+        colorIndex: 1,
+        history: "'의(義)를 돈독히 한다'는 숭고한 뜻을 품고 서쪽을 지키던 4대문 중 하나입니다. 일제강점기 도시계획으로 헐려 지금은 터로만 남아 있지만, 시민들의 가슴속에 사라지지 않는 역사적 무게감으로 기억되는 곳입니다."
+      },
+      {
+        id: 7,
+        animal: "말",
+        name: "포니",
+        location: "숭례문 (남대문)",
+        worryTitle: "미래에 대한 불안",
+        worryDetail: "불확실성에 대한 걱정과 막막함",
+        message: "오지 않은 내일을 걱정하느라 오늘을 놓치지 마! 지금 이 바람을 느끼며 달리는 거야!",
+        quest: "먼 미래 대신 오늘 저녁 맛있는 식사에 집중하기",
+        colorIndex: 2,
+        history: "대한민국 국보이자 한양도성의 남쪽 정문입니다. 남쪽 관악산의 거센 화기를 다스리고 '예(禮)를 숭상한다'는 숭고한 뜻을 지녔으며, 조선 600년간 도성 안팎을 오가는 백성들의 활기가 가장 뜨겁게 피어나던 상징적인 관문입니다."
+      },
+      {
+        id: 8,
+        animal: "양",
+        name: "포포",
+        location: "낙산 (동주산)",
+        worryTitle: "감정 기복과 서운함",
+        worryDetail: "내면의 다스림과 마음의 상처",
+        message: "속상했지? 괜찮아, 여기 포근한 내 품에 안겨서 한숨 돌리렴.",
+        quest: "남에게 바라는 대신 '나 오늘 애썼어' 안아주기",
+        colorIndex: 3,
+        history: "풍수지리상 한양의 좌청룡(左靑龍)에 해당하는 나지막하고 부드러운 산입니다. 산세가 낙타의 등을 닮았다 하여 붙여진 이름처럼 완만하게 굽이친 성벽을 따라 도성의 노을과 야경이 한눈에 내려다보이며, 백성들의 삶을 다정하게 감싸 안았던 공간입니다."
+      },
+      {
+        id: 9,
+        animal: "원숭이",
+        name: "조이",
+        location: "흥인지문 (동대문)",
+        worryTitle: "타인과의 비교",
+        worryDetail: "상대적 박탈감과 자존감 저하",
+        message: "남들 무대가 뭐가 중요해? 우리만의 신나는 놀이판을 다시 짜면 그만이지!",
+        quest: "SNS 대신 좋아하는 음악 1곡 온전히 듣기",
+        colorIndex: 0,
+        history: "도성의 동쪽을 지키는 대문으로 '어짊(仁)을 일으킨다'는 뜻입니다. 지형이 낮고 취약한 동쪽 방면을 방어하기 위해 한양도성 4대문 중 유일하게 바깥에 둥근 옹성(甕城)을 둘렀으며, 독창적인 방어 건축 미학을 보여줍니다."
+      },
+      {
+        id: 10,
+        animal: "닭",
+        name: "새벽",
+        location: "광희문 (동남소문)",
+        worryTitle: "과거의 후회와 미련",
+        worryDetail: "지나간 일에 대한 미련과 자책",
+        message: "어두운 밤은 지나갔다. 단단한 목소리로 새 아침을 열고 다시 일어서라.",
+        quest: "이미 일어난 일에 '그럴 수 있지' 마침표 찍기",
+        colorIndex: 1,
+        history: "'빛이 널리 비춘다'는 뜻을 담은 동남쪽 소문입니다. 과거 도성 안의 시신이 밖으로 나가던 시구문(屍軀門)이자 물길을 틔우던 수구문으로, 서민들의 가슴 아픈 이별을 배웅하며 끝내 어둠을 딛고 새 새벽빛을 맞이하던 애환의 관문입니다."
+      },
+      {
+        id: 11,
+        animal: "개",
+        name: "도아",
+        location: "목멱산 (남산)",
+        worryTitle: "역할의 무게와 책임감",
+        worryDetail: "기대와 부담감에서 오는 압박",
+        message: "혼자서 그 무거운 짐을 다 안으려 하지 마. 네 곁엔 늘 내가 있을 테니까 나누자.",
+        quest: "혼자 끙끙 앓던 고민을 신뢰하는 이에게 털어놓기",
+        colorIndex: 2,
+        history: "풍수지리상 도성의 남쪽을 지키는 남주작(南朱雀)이자 안산(案山)입니다. 전국 팔도의 급보를 봉화로 한양에 전달하던 봉수대가 자리했던 국가 안보의 심장부입니다. 사계절 늘 푸른 소나무처럼 변함없는 충정과 의리로 도성을 지켜온 유서 깊은 명산입니다."
+      },
+      {
+        id: 12,
+        animal: "돼지",
+        name: "도니",
+        location: "소의문 터 (서소문)",
+        worryTitle: "외로움과 고립감",
+        worryDetail: "군중 속의 외로움과 진정한 연결의 부재",
+        message: "일상 속 소소한 행복이 얼마나 많은데! 마음을 열고 나랑 맛있는 것 먹으며 나누자.",
+        quest: "고마운 사람에게 소소한 안부 톡 하나 보내기",
+        colorIndex: 3,
+        history: "도성의 서남쪽에 위치했던 소문으로, '의(義)를 밝힌다'는 뜻을 담고 있습니다. 한강과 마포나루의 풍부한 물자가 도성 안으로 들어오던 서민 경제의 주요 통로이자, 장터를 오가던 사람들의 정겨운 온기가 머물던 관문 터입니다."
+      }
+    ];
+
+    let actionStatus = JSON.parse(localStorage.getItem('doseong_pop_actions') || '{}');
+    let archiveList = JSON.parse(localStorage.getItem('doseong_pop_archive') || '[]');
+    let fortuneHistory = JSON.parse(localStorage.getItem('doseong_pop_fortunes') || '{}');
+    let isActionsExpanded = false;
+
+    let currentCalDate = new Date(2026, 8, 13);
+    let selectedCalKey = '2026.09.13';
+
+    function initApp() {
+      lucide.createIcons();
+      renderGuardianActions();
+      renderWorryChips();
+      renderGuardiansList();
+      renderArchiveList();
+      renderCalendar();
+      updateProgressDisplay();
+      document.getElementById('hero-pony-avatar').innerHTML = ZODIAC_CHAR_SVGS[7];
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('app-toast');
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      setTimeout(() => { toast.style.opacity = '0'; }, 2400);
+    }
+
+    function scrollToTop() {
+      const viewport = document.getElementById('main-scroll-viewport');
+      viewport.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleMainScroll() {
+      const viewport = document.getElementById('main-scroll-viewport');
+      const scrollTopBtn = document.getElementById('btn-scroll-top');
+      
+      if (viewport.scrollTop > 180) {
+        scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
+        scrollTopBtn.classList.add('opacity-100', 'translate-y-0');
+      } else {
+        scrollTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-6');
+        scrollTopBtn.classList.remove('opacity-100', 'translate-y-0');
+      }
+    }
+
+    function updateProgressDisplay() {
+      const totalActions = GUARDIAN_ACTIONS.length;
+      const checkedCount = Object.values(actionStatus).filter(Boolean).length;
+      const percentage = Math.round((checkedCount / totalActions) * 100);
+
+      const progressEl = document.getElementById('orb-progress');
+      const statusTextEl = document.getElementById('orb-status-text');
+      const headerCountEl = document.getElementById('header-purify-count');
+      const descTextEl = document.getElementById('orb-desc-text');
+      const orbWrapper = document.getElementById('orb-interactive-wrapper');
+      const starEl = document.getElementById('orb-inner-star');
+      const uncheckBtn = document.getElementById('btn-uncheck-all');
+      const hintEl = document.getElementById('orb-touch-hint');
+
+      progressEl.style.width = `${percentage}%`;
+      statusTextEl.textContent = `${percentage}% CLEAR`;
+      headerCountEl.textContent = `${checkedCount}/${totalActions} 완수`;
+
+      if (checkedCount > 0) {
+        uncheckBtn.classList.remove('hidden');
+      } else {
+        uncheckBtn.classList.add('hidden');
+      }
+
+      if (percentage === 100) {
+        statusTextEl.className = "text-textMain bg-brandLime px-2.5 py-0.5 rounded-full font-black text-[11px] animate-pulse";
+        progressEl.className = "bg-brandLime h-full rounded-full transition-all duration-500";
+        orbWrapper.className = "relative w-44 h-44 flex items-center justify-center orb-fully-cleared select-none active:scale-95 cursor-pointer";
+        starEl.style.transform = "scale(1.08) rotate(3deg)";
+        starEl.style.filter = "drop-shadow(0 0 16px rgba(255, 214, 243, 0.9))";
+        descTextEl.innerHTML = "<b class='text-brandBlue'>별 보석 구슬을 터치해 보세요!</b> 100% 맑아진 구슬이 앞으로의 운세를 비춥니다. ✦";
+        hintEl.classList.remove('hidden');
+      } else {
+        statusTextEl.className = "text-brandBlue bg-blue-50 px-2.5 py-0.5 rounded-full font-black text-[11px]";
+        progressEl.className = "bg-brandBlue h-full rounded-full transition-all duration-500";
+        orbWrapper.className = "relative w-44 h-44 flex items-center justify-center animate-orb-float transition-all duration-500 select-none active:scale-95 cursor-pointer";
+        starEl.style.transform = `scale(${0.85 + (percentage / 100) * 0.15})`;
+        starEl.style.filter = "none";
+        descTextEl.textContent = '"스스로 실천할 때마다 마음 구슬이 투명한 빛을 되찾습니다."';
+        hintEl.classList.add('hidden');
+      }
+    }
+
+    function handleOrbTouch() {
+      const totalActions = GUARDIAN_ACTIONS.length;
+      const checkedCount = Object.values(actionStatus).filter(Boolean).length;
+
+      if (checkedCount === totalActions) {
+        drawRandomFortune();
+        openFortuneModal();
+      } else {
+        const remaining = totalActions - checkedCount;
+        showToast(`수호신의 실천 ${remaining}개를 더 완료하면 마음 구슬의 비밀 운세가 열립니다! 🔮`);
+      }
+    }
+
+    function drawRandomFortune() {
+      const randomIndex = Math.floor(Math.random() * FORTUNE_LIST.length);
+      const chosenFortune = FORTUNE_LIST[randomIndex];
+      document.getElementById('fortune-text-content').textContent = `"${chosenFortune}"`;
+
+      const now = new Date(2026, 8, 13);
+      const dateKey = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+      
+      fortuneHistory[dateKey] = chosenFortune;
+      localStorage.setItem('doseong_pop_fortunes', JSON.stringify(fortuneHistory));
+      renderCalendar();
+    }
+
+    function openFortuneModal() {
+      const modal = document.getElementById('fortune-modal');
+      const box = document.getElementById('fortune-card-box');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-95');
+        box.classList.add('scale-100');
+      }, 10);
+      lucide.createIcons();
+    }
+
+    function closeFortuneModal() {
+      const modal = document.getElementById('fortune-modal');
+      const box = document.getElementById('fortune-card-box');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
+    }
+
+    function switchTab(tabName) {
+      const tabs = ['home', 'counsel', 'guardians', 'archive'];
+      tabs.forEach(t => {
+        const tabEl = document.getElementById(`tab-${t}`);
+        const btnEl = document.getElementById(`nav-btn-${t}`);
+        if (t === tabName) {
+          tabEl.classList.remove('hidden');
+          btnEl.classList.remove('text-slate-400');
+          btnEl.classList.add('text-brandBlue');
+        } else {
+          tabEl.classList.add('hidden');
+          btnEl.classList.remove('text-brandBlue');
+          btnEl.classList.add('text-slate-400');
+        }
+      });
+      scrollToTop();
+      lucide.createIcons();
+    }
+
+    function toggleActionExpand() {
+      isActionsExpanded = !isActionsExpanded;
+      renderGuardianActions();
+      handleMainScroll();
+    }
+
+    /* 1. 홈: 실천 체크 슬롯 */
+    function renderGuardianActions() {
+      const container = document.getElementById('guardian-actions-container');
+      container.innerHTML = '';
+
+      const visibleItems = isActionsExpanded ? GUARDIAN_ACTIONS : GUARDIAN_ACTIONS.slice(0, 3);
+
+      visibleItems.forEach(item => {
+        const isChecked = !!actionStatus[item.id];
+        const color = BRAND_COLORS[item.colorIndex];
+        const card = document.createElement('div');
+        card.className = `pop-card p-3.5 flex items-center justify-between gap-3 border ${
+          isChecked ? 'bg-blue-50/70 border-brandBlue/30' : 'bg-white border-slate-100'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-center gap-3 pr-1">
+            <div class="w-12 h-12 rounded-2xl ${color.bg} p-1 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+              <div class="w-full h-full">${ZODIAC_CHAR_SVGS[item.id]}</div>
+            </div>
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-1.5 text-[11px] font-bold">
+                <span class="text-textMain font-title font-extrabold uppercase">[${item.name} / ${item.animal}] ${item.power}</span>
+                <span class="text-slate-300">·</span>
+                <span class="text-textSub text-[10px]">${item.location}</span>
+              </div>
+              <p class="text-xs font-semibold leading-tight ${isChecked ? 'line-through text-slate-400' : 'text-textMain'}">
+                ${item.desc}
+              </p>
+            </div>
+          </div>
+          <button onclick="toggleActionCheck(${item.id})" class="px-3.5 py-2 rounded-xl text-xs font-mono font-black shrink-0 transition-all ${
+            isChecked 
+              ? 'bg-brandBlue text-white shadow-sm' 
+              : 'bg-pillBg text-slate-500 hover:bg-slate-200'
+          }">
+            ${isChecked ? '[ ✔ ]' : '[ &nbsp;&nbsp; ]'}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      const toggleText = document.getElementById('fold-toggle-text');
+      const toggleIcon = document.getElementById('fold-toggle-icon');
+      const bottomBtn = document.getElementById('fold-bottom-btn');
+
+      if (isActionsExpanded) {
+        toggleText.textContent = '간략히 접기';
+        toggleIcon.classList.add('rotate-180');
+        bottomBtn.innerHTML = `<span>수호신 목록 간략히 접기</span><i data-lucide="chevron-up" class="w-4 h-4"></i>`;
+      } else {
+        toggleText.textContent = '전체 펼치기 (12)';
+        toggleIcon.classList.remove('rotate-180');
+        bottomBtn.innerHTML = `<span>더 많은 수호신 능력 펼치기 (9)</span><i data-lucide="chevron-down" class="w-4 h-4"></i>`;
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleActionCheck(id) {
+      actionStatus[id] = !actionStatus[id];
+      localStorage.setItem('doseong_pop_actions', JSON.stringify(actionStatus));
+
+      const target = GUARDIAN_ACTIONS.find(a => a.id === id);
+      renderGuardianActions();
+      updateProgressDisplay();
+
+      const checkedCount = Object.values(actionStatus).filter(Boolean).length;
+      if (checkedCount === GUARDIAN_ACTIONS.length) {
+        showToast(`🎉 12개 실천 완수! 구슬을 터치해 오늘의 운세를 확인하세요! 🔮`);
+      } else if (actionStatus[id]) {
+        showToast(`[${target.name} / ${target.animal}] ${target.power} 실천 완료! ✦`);
+      }
+    }
+
+    function clearAllActionChecks() {
+      if (!confirm("모든 수호신의 실천 체크를 해제하시겠습니까?")) return;
+
+      actionStatus = {};
+      localStorage.setItem('doseong_pop_actions', JSON.stringify(actionStatus));
+
+      renderGuardianActions();
+      updateProgressDisplay();
+      showToast("모든 실천 체크가 해제되었습니다.");
+    }
+
+    /* 2. 고민 처방소 */
+    function renderWorryChips() {
+      const grid = document.getElementById('worry-chip-grid');
+      grid.innerHTML = '';
+
+      ZODIAC_DATA.forEach(item => {
+        const color = BRAND_COLORS[item.colorIndex];
+        const btn = document.createElement('button');
+        btn.onclick = () => selectWorry(item.id);
+        btn.className = `${color.bg} ${color.text} p-4 rounded-3xl text-left transition-transform active:scale-95 shadow-sm flex flex-col justify-between h-40 relative overflow-hidden`;
+        btn.innerHTML = `
+          <div class="flex items-center justify-between w-full">
+            <div class="w-12 h-12 rounded-2xl bg-white/30 p-1 flex items-center justify-center backdrop-blur-sm shadow-inner overflow-hidden">
+              <div class="w-full h-full">${ZODIAC_CHAR_SVGS[item.id]}</div>
+            </div>
+            <span class="text-[10px] font-black ${color.tag} px-2.5 py-1 rounded-full uppercase tracking-wider">${item.name}</span>
+          </div>
+          <div>
+            <div class="font-title font-extrabold text-sm leading-tight uppercase drop-shadow-sm">
+              ${item.worryTitle}
+            </div>
+            <div class="text-[10px] font-medium opacity-85 line-clamp-1 mt-1">
+              ${item.worryDetail}
+            </div>
+          </div>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectWorry(id) {
+      const data = ZODIAC_DATA.find(d => d.id === id);
+      if (!data) return;
+
+      const card = document.getElementById('counsel-result-card');
+      card.classList.remove('hidden');
+
+      document.getElementById('counsel-animal-avatar').innerHTML = ZODIAC_CHAR_SVGS[data.id];
+      document.getElementById('counsel-guardian-name').textContent = `${data.name} 수호신`;
+      document.getElementById('counsel-guardian-loc').textContent = `${data.location} 결계`;
+      document.getElementById('counsel-message').textContent = `"${data.message}"`;
+      document.getElementById('counsel-quest').textContent = data.quest;
+
+      const commitBtn = document.getElementById('counsel-commit-btn');
+      commitBtn.onclick = () => {
+        const worryText = `[${data.worryTitle}]에 대한 흔들림`;
+        const actionText = `${data.name}의 조언대로 [${data.quest}]`;
+
+        const now = new Date(2026, 8, 13);
+        const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+        archiveList.unshift({
+          id: Date.now(),
+          charId: data.id,
+          worry: worryText,
+          action: actionText,
+          date: dateStr,
+          guardian: data.name
+        });
+
+        localStorage.setItem('doseong_pop_archive', JSON.stringify(archiveList));
+
+        document.getElementById('archive-input-worry').value = worryText;
+        document.getElementById('archive-input-action').value = actionText;
+
+        renderArchiveList();
+        updateProgressDisplay();
+        switchTab('archive');
+        switchArchiveSubView('books');
+
+        showToast(`✨ ${data.name} 수호신의 미션이 기록장에 봉헌되었습니다!`);
+      };
+
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      lucide.createIcons();
+    }
+
+    /* 3. 순성 도감 */
+    function renderGuardiansList() {
+      const list = document.getElementById('guardians-list-container');
+      list.innerHTML = '';
+
+      ZODIAC_DATA.forEach(item => {
+        const color = BRAND_COLORS[item.colorIndex];
+        const itemCard = document.createElement('div');
+        itemCard.onclick = () => openGuardianHistory(item.id);
+        itemCard.className = "pop-card p-4 flex items-start gap-3.5 cursor-pointer hover:border-brandBlue transition-all group";
+        itemCard.innerHTML = `
+          <div class="w-14 h-14 rounded-2xl ${color.bg} p-1 text-white flex items-center justify-center shrink-0 shadow-sm overflow-hidden group-hover:scale-105 transition-transform">
+            <div class="w-full h-full">${ZODIAC_CHAR_SVGS[item.id]}</div>
+          </div>
+          <div class="space-y-1 flex-1">
+            <div class="flex items-center justify-between">
+              <span class="font-title font-extrabold text-sm text-textMain uppercase">${item.name} (${item.animal})</span>
+              <span class="text-[10px] font-black text-brandBlue bg-blue-50 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                <span>${item.location}</span>
+                <i data-lucide="info" class="w-3 h-3"></i>
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-textSub leading-snug">
+              "${item.message}"
+            </p>
+            <div class="text-[10px] font-bold text-brandBlue/80 flex items-center gap-1 pt-1">
+              <span>터치하여 역사적 유래 보기</span>
+              <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            </div>
+          </div>
+        `;
+        list.appendChild(itemCard);
+      });
+      lucide.createIcons();
+    }
+
+    function openGuardianHistory(guardianId) {
+      const data = ZODIAC_DATA.find(d => d.id === guardianId);
+      if (!data) return;
+
+      document.getElementById('history-avatar').innerHTML = ZODIAC_CHAR_SVGS[data.id];
+      document.getElementById('history-name-title').textContent = `${data.name} (${data.animal})`;
+      document.getElementById('history-location-subtitle').textContent = data.location;
+      document.getElementById('history-description-text').textContent = data.history;
+      document.getElementById('history-mission-hint').textContent = `수호신의 조언: "${data.quest}"`;
+
+      const modal = document.getElementById('guardian-history-modal');
+      const box = document.getElementById('guardian-history-box');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        box.classList.remove('scale-95');
+        box.classList.add('scale-100');
+      }, 10);
+      lucide.createIcons();
+    }
+
+    function closeGuardianHistoryModal() {
+      const modal = document.getElementById('guardian-history-modal');
+      const box = document.getElementById('guardian-history-box');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
+    }
+
+    /* 4. 마음 정화록 서브 탭 & 덕담 캘린더 */
+    function switchArchiveSubView(viewName) {
+      const booksView = document.getElementById('archive-view-books');
+      const calendarView = document.getElementById('archive-view-calendar');
+      const btnBooks = document.getElementById('sub-btn-books');
+      const btnCalendar = document.getElementById('sub-btn-calendar');
+
+      if (viewName === 'books') {
+        booksView.classList.remove('hidden');
+        calendarView.classList.add('hidden');
+        btnBooks.className = "flex-1 py-2 rounded-xl text-xs font-title font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5";
+        btnCalendar.className = "flex-1 py-2 rounded-xl text-xs font-title font-bold text-textSub hover:text-textMain transition-all flex items-center justify-center gap-1.5";
+      } else {
+        booksView.classList.add('hidden');
+        calendarView.classList.remove('hidden');
+        btnCalendar.className = "flex-1 py-2 rounded-xl text-xs font-title font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5";
+        btnBooks.className = "flex-1 py-2 rounded-xl text-xs font-title font-bold text-textSub hover:text-textMain transition-all flex items-center justify-center gap-1.5";
+        renderCalendar();
+      }
+      lucide.createIcons();
+    }
+
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+
+      document.getElementById('cal-month-year').textContent = `${year}년 ${month + 1}월`;
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const lastDay = new Date(year, month + 1, 0).getDate();
+
+      const container = document.getElementById('calendar-days-grid');
+      container.innerHTML = '';
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        const empty = document.createElement('div');
+        empty.className = "h-10";
+        container.appendChild(empty);
+      }
+
+      for (let day = 1; day <= lastDay; day++) {
+        const dayStr = String(day).padStart(2, '0');
+        const monthStr = String(month + 1).padStart(2, '0');
+        const dateKey = `${year}.${monthStr}.${dayStr}`;
+
+        const hasFortune = !!fortuneHistory[dateKey];
+        const isSelected = selectedCalKey === dateKey;
+
+        const cell = document.createElement('button');
+        cell.onclick = () => selectCalendarDate(dateKey);
+
+        let cellStyle = "h-10 rounded-2xl flex flex-col items-center justify-center relative transition-all ";
+        if (isSelected) {
+          cellStyle += "bg-brandBlue text-white shadow-md ";
+        } else if (hasFortune) {
+          cellStyle += "bg-brandLime/40 text-textMain hover:bg-brandLime ";
+        } else {
+          cellStyle += "hover:bg-pillBg text-textMain ";
+        }
+
+        cell.className = cellStyle;
+        cell.innerHTML = `
+          <span class="text-[12px] ${isSelected ? 'font-black' : 'font-semibold'}">${day}</span>
+          ${hasFortune ? `<span class="w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-brandLime' : 'bg-brandBlue'} mt-0.5"></span>` : ''}
+        `;
+        container.appendChild(cell);
+      }
+
+      const totalFortunes = Object.keys(fortuneHistory).length;
+      document.getElementById('cal-total-fortunes-badge').textContent = `총 ${totalFortunes}일 기록됨`;
+
+      displaySelectedDateFortune();
+    }
+
+    function changeCalendarMonth(delta) {
+      currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function selectCalendarDate(dateKey) {
+      selectedCalKey = dateKey;
+      renderCalendar();
+    }
+
+    function displaySelectedDateFortune() {
+      const titleEl = document.getElementById('selected-date-title');
+      const textEl = document.getElementById('selected-fortune-text');
+
+      titleEl.textContent = `${selectedCalKey}의 덕담`;
+
+      if (fortuneHistory[selectedCalKey]) {
+        textEl.innerHTML = `<span class="text-brandBlue font-black text-sm">"</span> ${fortuneHistory[selectedCalKey]} <span class="text-brandBlue font-black text-sm">"</span>`;
+      } else {
+        textEl.innerHTML = `<span class="text-slate-400">이 날짜에는 저장된 덕담이 없습니다.<br>홈 화면의 마음 구슬을 100% 정화하여 따뜻한 덕담을 채워보세요! ✨</span>`;
+      }
+    }
+
+    /* 5. 정화 서책 리스트 */
+    function renderArchiveList() {
+      const container = document.getElementById('archive-list-container');
+      const clearAllBtn = document.getElementById('btn-clear-all');
+      container.innerHTML = '';
+      document.getElementById('archive-books-count').textContent = `${archiveList.length}권 봉헌`;
+
+      if (archiveList.length === 0) {
+        clearAllBtn.classList.add('hidden');
+        container.innerHTML = `
+          <div class="text-center py-10 text-xs font-bold text-slate-400 pop-card p-6">
+            아직 서재에 봉헌된 고서가 없습니다.<br>처방소에서 미션을 등록해보세요!
+          </div>
+        `;
+        return;
+      }
+
+      clearAllBtn.classList.remove('hidden');
+
+      archiveList.forEach((entry, idx) => {
+        const charSvg = entry.charId ? ZODIAC_CHAR_SVGS[entry.charId] : null;
+        const card = document.createElement('div');
+        card.className = "pop-card p-4 space-y-1.5 border-l-4 border-l-brandBlue relative group";
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] font-extrabold text-brandBlue">
+            <span class="uppercase font-title flex items-center gap-1.5">
+              ${charSvg ? `<span class="w-5 h-5 inline-block">${charSvg}</span>` : '<span>📖</span>'}
+              <span>BOOK #${archiveList.length - idx}</span>
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-slate-400 text-[10px] font-medium">${entry.date}</span>
+              <button onclick="deleteArchiveEntry(${idx})" title="기록 삭제" class="p-1 rounded-full text-slate-300 hover:text-brandRed hover:bg-red-50 transition-colors">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+          <p class="text-xs font-bold text-textMain leading-snug pr-6">
+            <span class="text-slate-400 text-[10px]">[흔들림]</span> ${entry.worry}
+          </p>
+          <p class="text-xs font-semibold text-brandRed leading-snug">
+            <span class="text-slate-400 text-[10px]">[극복실천]</span> ${entry.action}
+          </p>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function deleteArchiveEntry(index) {
+      if (!confirm("이 정화 기록을 서재에서 삭제하시겠습니까?")) return;
+
+      archiveList.splice(index, 1);
+      localStorage.setItem('doseong_pop_archive', JSON.stringify(archiveList));
+
+      renderArchiveList();
+      updateProgressDisplay();
+      showToast("선택한 서책 기록이 삭제되었습니다.");
+    }
+
+    function clearAllArchive() {
+      if (!confirm("봉헌된 모든 정화 서책을 서재에서 비우시겠습니까?")) return;
+
+      archiveList = [];
+      localStorage.setItem('doseong_pop_archive', JSON.stringify(archiveList));
+
+      renderArchiveList();
+      updateProgressDisplay();
+      showToast("서재의 모든 기록이 비워졌습니다.");
+    }
+
+    function saveArchiveEntry() {
+      const worryInput = document.getElementById('archive-input-worry');
+      const actionInput = document.getElementById('archive-input-action');
+
+      const worry = worryInput.value.trim();
+      const action = actionInput.value.trim();
+
+      if (!worry || !action) {
+        showToast("고민과 실천 내용을 모두 작성해주세요!");
+        return;
+      }
+
+      const now = new Date(2026, 8, 13);
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+      archiveList.unshift({
+        id: Date.now(),
+        worry,
+        action,
+        date: dateStr
+      });
+      localStorage.setItem('doseong_pop_archive', JSON.stringify(archiveList));
+
+      renderArchiveList();
+      updateProgressDisplay();
+      worryInput.value = '';
+      actionInput.value = '';
+
+      showToast("경복궁 십이지서가에 새로운 서책이 봉헌되었습니다! ✦");
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
